@@ -327,6 +327,7 @@ sentry.conf.py: |-
 
 
   SENTRY_WEB_PORT = {{ template "sentry.port" }}
+  SENTRY_USE_X_FORWARDED_FOR = True
   SENTRY_PUBLIC = {{ .Values.system.public | ternary "True" "False" }}
   SENTRY_WEB_OPTIONS = {
   {{- if .Values.ipv6 }}
