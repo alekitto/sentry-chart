@@ -3,7 +3,7 @@ entries:
   clickhouse:
   - apiVersion: v1
     appVersion: "19.14"
-    created: "2020-08-30T10:10:16.505162838Z"
+    created: "2020-10-24T09:29:32.983474638Z"
     description: ClickHouse is an open source column-oriented database management
       system capable of real time generation of analytical data reports using SQL
       queries
@@ -18,11 +18,11 @@ entries:
     sources:
     - https://github.com/sentry-kubernetes/charts
     urls:
-    - https://alekitto.github.io/sentry-chart/clickhouse-1.5.0.tgz
+    - https://sentry-kubernetes.github.io/charts/clickhouse-1.5.0.tgz
     version: 1.5.0
   - apiVersion: v1
     appVersion: "19.14"
-    created: "2020-08-30T10:10:16.502934533Z"
+    created: "2020-10-24T09:29:32.982282237Z"
     description: ClickHouse is an open source column-oriented database management
       system capable of real time generation of analytical data reports using SQL
       queries
@@ -37,11 +37,11 @@ entries:
     sources:
     - https://github.com/sentry-kubernetes/charts
     urls:
-    - https://alekitto.github.io/sentry-chart/clickhouse-1.4.0.tgz
+    - https://sentry-kubernetes.github.io/charts/clickhouse-1.4.0.tgz
     version: 1.4.0
   - apiVersion: v1
     appVersion: "19.14"
-    created: "2020-08-30T10:10:16.50131313Z"
+    created: "2020-10-24T09:29:32.980099134Z"
     description: ClickHouse is an open source column-oriented database management
       system capable of real time generation of analytical data reports using SQL
       queries
@@ -56,11 +56,11 @@ entries:
     sources:
     - https://github.com/sentry-kubernetes/charts
     urls:
-    - https://alekitto.github.io/sentry-chart/clickhouse-1.2.1.tgz
+    - https://sentry-kubernetes.github.io/charts/clickhouse-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v1
     appVersion: "19.14"
-    created: "2020-08-30T10:10:16.499946227Z"
+    created: "2020-10-24T09:29:32.979079133Z"
     description: ClickHouse is an open source column-oriented database management
       system capable of real time generation of analytical data reports using SQL
       queries
@@ -75,11 +75,11 @@ entries:
     sources:
     - https://github.com/sentry-kubernetes/charts
     urls:
-    - https://alekitto.github.io/sentry-chart/clickhouse-1.2.0.tgz
+    - https://sentry-kubernetes.github.io/charts/clickhouse-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
     appVersion: "19.14"
-    created: "2020-08-30T10:10:16.498569224Z"
+    created: "2020-10-24T09:29:32.978058532Z"
     description: ClickHouse is an open source column-oriented database management
       system capable of real time generation of analytical data reports using SQL
       queries
@@ -94,11 +94,11 @@ entries:
     sources:
     - https://github.com/sentry-kubernetes/charts
     urls:
-    - https://alekitto.github.io/sentry-chart/clickhouse-1.1.0.tgz
+    - https://sentry-kubernetes.github.io/charts/clickhouse-1.1.0.tgz
     version: 1.1.0
   - apiVersion: v1
     appVersion: "19.14"
-    created: "2020-08-30T10:10:16.497066121Z"
+    created: "2020-10-24T09:29:32.97700293Z"
     description: ClickHouse is an open source column-oriented database management
       system capable of real time generation of analytical data reports using SQL
       queries
@@ -113,11 +113,11 @@ entries:
     sources:
     - https://github.com/sentry-kubernetes/charts
     urls:
-    - https://alekitto.github.io/sentry-chart/clickhouse-1.0.1.tgz
+    - https://sentry-kubernetes.github.io/charts/clickhouse-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
     appVersion: "19.14"
-    created: "2020-08-30T10:10:16.494531415Z"
+    created: "2020-10-24T09:29:32.975979729Z"
     description: ClickHouse is an open source column-oriented database management
       system capable of real time generation of analytical data reports using SQL
       queries
@@ -132,12 +132,48 @@ entries:
     sources:
     - https://github.com/sentry-kubernetes/charts
     urls:
-    - https://alekitto.github.io/sentry-chart/clickhouse-1.0.0.tgz
+    - https://sentry-kubernetes.github.io/charts/clickhouse-1.0.0.tgz
     version: 1.0.0
   sentry:
   - apiVersion: v2
+    appVersion: 20.9.0
+    created: "2020-10-24T09:29:33.313653903Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.3.2
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.0.4
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://sentry-kubernetes.github.io/charts
+      version: 1.5.0
+    - alias: rabbitmq
+      condition: rabbitmq.enabled
+      name: rabbitmq-ha
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 1.39.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 8.2.1
+    - condition: nginx.enabled
+      name: nginx
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.0.5
+    description: A Helm chart for Kubernetes
+    digest: 065da01dfa73ee2460d07e6efd9247277222ddbe1c5a0567b2b6f9803afb624c
+    name: sentry
+    type: application
+    urls:
+    - https://sentry-kubernetes.github.io/charts/sentry-6.1.0.tgz
+    version: 6.1.0
+  - apiVersion: v2
     appVersion: 20.7.2
-    created: "2020-08-30T10:10:16.912443416Z"
+    created: "2020-10-24T09:29:33.298147786Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -169,11 +205,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-5.1.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-5.1.0.tgz
     version: 5.1.0
   - apiVersion: v2
     appVersion: 20.7.2
-    created: "2020-08-30T10:10:16.892265972Z"
+    created: "2020-10-24T09:29:33.281920668Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -201,11 +237,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-5.0.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-5.0.0.tgz
     version: 5.0.0
   - apiVersion: v2
     appVersion: 20.7.2
-    created: "2020-08-30T10:10:16.872844931Z"
+    created: "2020-10-24T09:29:33.268158853Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -233,11 +269,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-4.8.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-4.8.0.tgz
     version: 4.8.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.854273891Z"
+    created: "2020-10-24T09:29:33.255102138Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -265,11 +301,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-4.3.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-4.3.0.tgz
     version: 4.3.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.835940651Z"
+    created: "2020-10-24T09:29:33.241857924Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -297,11 +333,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-2.3.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-2.3.0.tgz
     version: 2.3.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.817229911Z"
+    created: "2020-10-24T09:29:33.228646609Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -329,11 +365,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-2.2.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-2.2.0.tgz
     version: 2.2.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.798581071Z"
+    created: "2020-10-24T09:29:33.215284095Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -361,11 +397,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-2.1.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-2.1.0.tgz
     version: 2.1.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.77957123Z"
+    created: "2020-10-24T09:29:33.20162688Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -393,11 +429,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-2.0.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-2.0.1.tgz
     version: 2.0.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.761870591Z"
+    created: "2020-10-24T09:29:33.188063565Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -425,11 +461,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-2.0.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-2.0.0.tgz
     version: 2.0.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.742155149Z"
+    created: "2020-10-24T09:29:33.17435565Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -457,11 +493,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-1.3.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-1.3.1.tgz
     version: 1.3.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.723732009Z"
+    created: "2020-10-24T09:29:33.161214935Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -489,11 +525,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-1.3.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-1.3.0.tgz
     version: 1.3.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.706207971Z"
+    created: "2020-10-24T09:29:33.14736752Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -521,11 +557,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-1.2.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.687504131Z"
+    created: "2020-10-24T09:29:33.134266606Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -553,11 +589,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-1.1.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-1.1.0.tgz
     version: 1.1.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.669062591Z"
+    created: "2020-10-24T09:29:33.120522891Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -585,11 +621,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-1.0.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.634578017Z"
+    created: "2020-10-24T09:29:33.096193764Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -617,11 +653,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.12.3.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.12.3.tgz
     version: 0.12.3
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.616077477Z"
+    created: "2020-10-24T09:29:33.082949249Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -649,11 +685,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.12.2.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.12.2.tgz
     version: 0.12.2
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.596928136Z"
+    created: "2020-10-24T09:29:33.06533383Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -681,11 +717,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.12.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.12.1.tgz
     version: 0.12.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.578704897Z"
+    created: "2020-10-24T09:29:33.045859009Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -713,11 +749,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.12.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.12.0.tgz
     version: 0.12.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.559933956Z"
+    created: "2020-10-24T09:29:33.027864289Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -745,11 +781,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.11.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.11.1.tgz
     version: 0.11.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.542065518Z"
+    created: "2020-10-24T09:29:33.013196673Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -777,11 +813,11 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.11.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.11.0.tgz
     version: 0.11.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.523851878Z"
+    created: "2020-10-24T09:29:32.996958654Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -809,122 +845,122 @@ entries:
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.10.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.10.0.tgz
     version: 0.10.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.651480854Z"
+    created: "2020-10-24T09:29:33.107680776Z"
     description: A Helm chart for Kubernetes
     digest: ccf7aabac486a68779d6564d90a875b45fefa4e4a9e8f86903355cf886b6a3aa
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.9.4.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.9.4.tgz
     version: 0.9.4
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.650155851Z"
+    created: "2020-10-24T09:29:33.106659575Z"
     description: A Helm chart for Kubernetes
     digest: 07b380bbb341bb276b962de0b3721c9142a97e9fd084a394fc4d9f5db75bceea
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.9.3.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.9.3.tgz
     version: 0.9.3
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.648510147Z"
+    created: "2020-10-24T09:29:33.105704774Z"
     description: A Helm chart for Kubernetes
     digest: a5a52cb5362e604215b1811e053a1b790d8f2e6c0c553a55d52f0750a6f63936
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.9.2.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.9.2.tgz
     version: 0.9.2
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.646981944Z"
+    created: "2020-10-24T09:29:33.104733873Z"
     description: A Helm chart for Kubernetes
     digest: 81e65b09754dea768122d4d619801bab77714f9c77520afbc1658c7bf68b563d
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.9.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.9.1.tgz
     version: 0.9.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.64544074Z"
+    created: "2020-10-24T09:29:33.103785172Z"
     description: A Helm chart for Kubernetes
     digest: 225f13adbe6a002014b135afc02b65771fbb5bbdf6f09e3179a408beb316846c
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.9.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.9.0.tgz
     version: 0.9.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.643839037Z"
+    created: "2020-10-24T09:29:33.102732471Z"
     description: A Helm chart for Kubernetes
     digest: aef5a5cd789251ab629d25d18ac94a7801e80fb99dde54dc98111e7547326ce8
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.8.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.8.0.tgz
     version: 0.8.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.641255831Z"
+    created: "2020-10-24T09:29:33.10138977Z"
     description: A Helm chart for Kubernetes
     digest: 2ced97e545a92598f9b3bc487aa53b7b4cd6df8ba2b97ffbce5807a6e0a641d0
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.7.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.7.0.tgz
     version: 0.7.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.639395127Z"
+    created: "2020-10-24T09:29:33.100098968Z"
     description: A Helm chart for Kubernetes
     digest: bf3b118679f72f65fa20120dfd4c1718b56694250e80dac285189a0073a2fbcc
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.6.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.6.1.tgz
     version: 0.6.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.638247525Z"
+    created: "2020-10-24T09:29:33.099161767Z"
     description: A Helm chart for Kubernetes
     digest: b24391c885cb84817b024df7feb81feb6d97443a1e7cf26d6a7a04cdd3e1af0c
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.6.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.637085022Z"
+    created: "2020-10-24T09:29:33.098240066Z"
     description: A Helm chart for Kubernetes
     digest: 476900c519773349f70e8d0171f870ba5ad7983c62fcc72ae3b7799948500f33
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.5.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.5.0.tgz
     version: 0.5.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.63577622Z"
+    created: "2020-10-24T09:29:33.097249465Z"
     description: A Helm chart for Kubernetes
     digest: 0da209fcf559a3aa66ef7715cf6327da2337e3739fff89e06a25d2e6a1488765
     name: sentry
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-0.2.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-0.2.1.tgz
     version: 0.2.1
   sentry-db:
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:17.09962677Z"
+    created: "2020-10-24T09:29:33.472871778Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -951,11 +987,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.9.4.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.9.4.tgz
     version: 0.9.4
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:17.083000961Z"
+    created: "2020-10-24T09:29:33.452376655Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -982,11 +1018,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.9.3.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.9.3.tgz
     version: 0.9.3
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:17.066046651Z"
+    created: "2020-10-24T09:29:33.432884734Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1013,11 +1049,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.9.2.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.9.2.tgz
     version: 0.9.2
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:17.04754934Z"
+    created: "2020-10-24T09:29:33.417990017Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1044,11 +1080,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.9.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.9.1.tgz
     version: 0.9.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:17.031695931Z"
+    created: "2020-10-24T09:29:33.405432004Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1075,11 +1111,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.9.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.9.0.tgz
     version: 0.9.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:17.015427121Z"
+    created: "2020-10-24T09:29:33.39332389Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1106,11 +1142,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.8.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.8.0.tgz
     version: 0.8.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.999222503Z"
+    created: "2020-10-24T09:29:33.381293377Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1137,11 +1173,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.7.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.7.0.tgz
     version: 0.7.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.980922263Z"
+    created: "2020-10-24T09:29:33.368205063Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1168,11 +1204,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.6.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.6.1.tgz
     version: 0.6.1
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.965642731Z"
+    created: "2020-10-24T09:29:33.352956046Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1199,11 +1235,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.6.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.945205986Z"
+    created: "2020-10-24T09:29:33.33875933Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1230,11 +1266,11 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.5.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.5.0.tgz
     version: 0.5.0
   - apiVersion: v2
     appVersion: 10.0.0
-    created: "2020-08-30T10:10:16.928559451Z"
+    created: "2020-10-24T09:29:33.325750816Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1261,12 +1297,12 @@ entries:
     name: sentry-db
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-db-0.2.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-db-0.2.1.tgz
     version: 0.2.1
   sentry-kubernetes:
   - apiVersion: v2
     appVersion: latest
-    created: "2020-08-30T10:10:17.100522771Z"
+    created: "2020-10-24T09:29:33.473886479Z"
     description: A Helm chart for sentry-kubernetes (https://github.com/getsentry/sentry-kubernetes)
     digest: 233c575ab9e3eb3f63ee347cf32d3719b22e6546952a160cf253b32f895b5b83
     home: https://github.com/getsentry/sentry-kubernetes
@@ -1280,11 +1316,11 @@ entries:
     - https://github.com/sentry-kubernetes/charts
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-kubernetes-0.3.1.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-kubernetes-0.3.1.tgz
     version: 0.3.1
   - apiVersion: v2
     appVersion: latest
-    created: "2020-08-30T10:10:17.100063671Z"
+    created: "2020-10-24T09:29:33.473408178Z"
     description: A Helm chart for sentry-kubernetes (https://github.com/getsentry/sentry-kubernetes)
     digest: 727778ddeffa08ad086e07dc6014f13a905145cde1d257816df2fd52f1ec93db
     home: https://github.com/getsentry/sentry-kubernetes
@@ -1298,6 +1334,6 @@ entries:
     - https://github.com/sentry-kubernetes/charts
     type: application
     urls:
-    - https://alekitto.github.io/sentry-chart/sentry-kubernetes-0.3.0.tgz
+    - https://sentry-kubernetes.github.io/charts/sentry-kubernetes-0.3.0.tgz
     version: 0.3.0
-generated: "2020-08-30T10:10:16.492888612Z"
+generated: "2020-10-24T09:29:32.974792028Z"
