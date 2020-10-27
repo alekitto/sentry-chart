@@ -2132,12 +2132,11 @@ kafka:
   kraft:
     enabled: true
   controller:
-    replicaCount: 3
-    ## if the load on the kafka controller increases, resourcesPreset must be increased
-    # resourcesPreset: small # small, medium, large, xlarge, 2xlarge
-    ## if the load on the kafka controller increases, persistence.size must be increased
-    # persistence:
-    #   size: 8Gi
+    replicaCount: 1
+  service:
+    ports:
+      client: 9092
+
   ## Use this to enable an extra service account
   # serviceAccount:
   #   create: false
