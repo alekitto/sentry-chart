@@ -25,6 +25,7 @@ config.yml: |-
   # Github #
   ##########
   {{- with .Values.github.appId }}
+  github-app.extended-permissions: ['repo']
   github-app.id: {{ . }}
   {{- end }}
   {{- with .Values.github.appName }}
