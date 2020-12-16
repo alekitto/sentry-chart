@@ -313,7 +313,6 @@ data:
                 {{- if not .Values.sentry.singleOrganization }}
                 "organizations:create",
                 {{ end -}}
-
                 {{- if .Values.sentry.features.orgSubdomains }}
                 "organizations:org-subdomains",
                 {{ end -}}
