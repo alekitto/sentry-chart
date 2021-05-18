@@ -1305,6 +1305,7 @@ sentry:
         ms: 1000
 
 snuba:
+  logLevel: info
   annotations: {}
   api:
     enabled: true
