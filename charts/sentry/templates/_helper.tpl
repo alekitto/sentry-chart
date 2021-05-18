@@ -572,6 +572,8 @@ Set RabbitMQ host
 Common Snuba environment variables
 */}}
 {{- define "sentry.snuba.env" -}}
+- name: LOG_LEVEL
+  value: {{ .Values.snuba.logLevel | quote }}
 - name: SNUBA_SETTINGS
   value: /etc/snuba/settings.py
 - name: DEFAULT_BROKERS
