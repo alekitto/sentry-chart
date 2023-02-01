@@ -463,6 +463,11 @@ sentry.conf.py: |-
               "organizations:metrics",
               "organizations:metrics-extraction",
               "organizations:transaction-metrics-extraction",
+              "organizations:javascript-console-error-tag",
+              "organizations:mobile-vitals",
+              "organizations:sentry-functions",
+              "organizations:source-maps-cta",
+              "organizations:issue-platform",
 
               {{- if .Values.sentry.features.enableSessionReplay}}
               "organizations:session-replay",
@@ -487,9 +492,14 @@ sentry.conf.py: |-
 
               {{- if .Values.sentry.features.enableProfiling }}
               "organizations:profiling",
+              "organizations:profiling-flamegraphs",
               "organizations:profiling-ui-frames",
+              "organizations:profiling-aggregate-flamegraph",
+              "organizations:profiling-previews",
               "organizations:profiling-using-transactions",
+              "organizations:profiling-sampled-format",
               "organizations:profiling-beta",
+              "organizations:profiling-ga",
               "organizations:profiling-stacktrace-links",
               "organizations:profiling-cpu-chart",
               "organizations:profiling-memory-chart",
@@ -564,6 +574,7 @@ sentry.conf.py: |-
   SENTRY_OPTIONS['mail.password'] = os.getenv("SENTRY_EMAIL_PASSWORD", "")
   SENTRY_OPTIONS['mail.port'] = int(os.getenv("SENTRY_EMAIL_PORT", {{ .Values.mail.port | quote }}))
   SENTRY_OPTIONS['mail.host'] = os.getenv("SENTRY_EMAIL_HOST", {{ .Values.mail.host | quote }})
+  SENTRY_OPTIONS['mail.list-namespace'] = os.getenv("SENTRY_EMAIL_HOST", {{ .Values.mail.listNamespace | quote }})
   SENTRY_OPTIONS['mail.from'] = os.getenv("SENTRY_EMAIL_FROM", {{ .Values.mail.from | quote }})
 
   #######################
