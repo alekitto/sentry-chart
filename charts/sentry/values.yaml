@@ -2271,6 +2271,7 @@ mail:
   # existingSecretKey: secret-key-name
   port: 25
   host: ""
+  listNamespace: localhost
   from: ""
 
 symbolicator:
