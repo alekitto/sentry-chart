@@ -168,6 +168,8 @@ data:
             <max_suspicious_broken_parts>{{ .Values.clickhouse.configmap.merge_tree.max_suspicious_broken_parts }}</max_suspicious_broken_parts>
         </merge_tree>
         {{- end }}
+
+        {{ .Values.clickhouse.configmap.extra_config | default "" | nindent 8 }}
     </yandex>
 {{- if .Values.clickhouse.configmap.configOverride }}
   override.xml: |-

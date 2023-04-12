@@ -312,6 +312,9 @@ clickhouse:
         compression: true
         backup:
           enabled: true
+
+    extra_config: ''
+
     ##
     ## Sending data to Graphite.
     # interval – The interval for sending, in seconds.
