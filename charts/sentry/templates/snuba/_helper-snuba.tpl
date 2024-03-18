@@ -41,7 +41,7 @@ settings.py: |
       "verify": env("CLICKHOUSE_VERIFY", "False").lower() in ("1", "true"),
       "user":  env("CLICKHOUSE_USER", "default"),
       "password": env("CLICKHOUSE_PASSWORD", ""),
-      "max_connections": int(os.environ.get("CLICKHOUSE_MAX_CONNECTIONS", 100)),
+      "max_connections": int(os.environ.get("CLICKHOUSE_MAX_CONNECTIONS", 1)),
       "database": env("CLICKHOUSE_DATABASE", "default"),
       "http_port": {{ include "sentry.clickhouse.http_port" . }},
       "storage_sets": {
@@ -70,6 +70,8 @@ settings.py: |
           "generic_metrics_gauges",
           "metrics_summaries",
           "profile_chunks",
+          "search_issues_tmp",
+          "events_analytics_platform"
       },
       {{- /*
         External ClickHouse can be single-node or clustered. When singleNode is

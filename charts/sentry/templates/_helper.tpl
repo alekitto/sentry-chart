@@ -9,6 +9,7 @@
 {{- define "snuba.port" -}}1218{{- end -}}
 {{- define "symbolicator.port" -}}3021{{- end -}}
 {{- define "vroom.port" -}}8085{{- end -}}
+{{- define "taskbroker.port" -}}50051{{- end -}}
 
 {{/*
   livenessProbe block for kafka-consumer / worker deployments that expose a
@@ -97,6 +98,18 @@ startupProbe:
 {{- default "ghcr.io/getsentry/vroom" .Values.images.vroom.repository -}}
 :
 {{- default .Chart.AppVersion .Values.images.vroom.tag -}}
+{{- end -}}
+
+{{- define "uptimeChecker.image" -}}
+{{- default "ghcr.io/getsentry/uptime-checker" .Values.images.uptimeChecker.repository -}}
+:
+{{- default .Chart.AppVersion .Values.images.uptimeChecker.tag -}}
+{{- end -}}
+
+{{- define "taskbroker.image" -}}
+{{- default "ghcr.io/getsentry/taskbroker" .Values.images.taskbroker.repository -}}
+:
+{{- default .Chart.AppVersion .Values.images.taskbroker.tag -}}
 {{- end -}}
 
 {{- define "uptimeChecker.image" -}}

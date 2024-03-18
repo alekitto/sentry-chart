@@ -157,6 +157,14 @@ sentry.conf.py: |-
 
   SENTRY_OPTIONS["system.event-retention-days"] = int(env('SENTRY_EVENT_RETENTION_DAYS') or {{ .Values.sentry.cleanup.days | quote }})
 
+  ############################
+  # Sentry Endpoint Settings #
+  ############################
+
+  # URI Prefixes for generating DSN URLs
+  # (default is URL_PREFIX)
+  # SENTRY_ENDPOINT = "https://sentry.ingest.example.com"
+
   {{- if has "errors-only" .Values.profiles }}
   SENTRY_SELF_HOSTED_ERRORS_ONLY = True
   {{- end }}
@@ -287,13 +295,6 @@ sentry.conf.py: |-
 
   SENTRY_DIGESTS = "sentry.digests.backends.redis.RedisBackend"
 
-  ###################
-  # Metrics Backend #
-  ###################
-
-  SENTRY_RELEASE_HEALTH = "sentry.release_health.metrics.MetricsReleaseHealthBackend"
-  SENTRY_RELEASE_MONITOR = "sentry.release_health.release_monitor.metrics.MetricReleaseMonitorBackend"
-
   ##############
   # Web Server #
   ##############
@@ -356,10 +357,25 @@ sentry.conf.py: |-
 
   # End of SSL/TLS settings
 
+  #################
+  # JS SDK Loader #
+  #################
+
+  # Configure Sentry JS SDK bundle URL template for Loader Scripts.
+  # Learn more about the Loader Scripts: https://docs.sentry.io/platforms/javascript/install/loader/
+  # If you wish to host your own JS SDK bundles, set `SETUP_JS_SDK_ASSETS` environment variable to `1`
+  # on your `.env` or `.env.custom` file. Then, replace the value below with your own public URL.
+  # For example: "https://sentry.example.com/js-sdk/%s/bundle%s.min.js"
+  #
+  # By default, the previous JS SDK assets version will be pruned during upgrades, if you wish
+  # to keep the old assets, set `SETUP_JS_SDK_KEEP_OLD_ASSETS` environment variable to any value on
+  # your `.env` or `.env.custom` file. The files should only be a few KBs, and this might be useful
+  # if you're using it directly like a CDN instead of using the loader script.
+  JS_SDK_LOADER_DEFAULT_SDK_URL = "https://browser.sentry-cdn.com/%s/bundle%s.min.js"
+
   ############
   # Features #
   ############
-
 
   SENTRY_FEATURES = {
     "auth:register": {{ .Values.auth.register | ternary "True" "False" }}
@@ -376,9 +392,18 @@ sentry.conf.py: |-
               "organizations:org-ingest-subdomains",
               {{- end }}
               "organizations:discover",
+              "organizations:discover-basic",
+              "organizations:discover-query",
+              "organizations:discover-frontend-use-events-endpoint",
+              "organizations:enterprise-perf",
+              "organizations:event-attachments",
+              "organizations:events",
               "organizations:global-views",
               "organizations:issue-views",
               "organizations:incidents",
+              "organizations:metric-alert-builder-aggregate",
+              "organizations:metric-alert-gui-filters",
+              "organizations:integrations-event-hooks",
               "organizations:integrations-issue-basic",
               "organizations:integrations-issue-sync",
               "organizations:invite-members",
@@ -387,6 +412,9 @@ sentry.conf.py: |-
               "organizations:advanced-search",
               "organizations:issue-platform",
               "organizations:monitors",
+              "organizations:onboarding",
+              "organizations:org-saved-searches",
+              "organizations:org-ingest-subdomains",
               "organizations:dashboards-mep",
               "organizations:mep-rollout-flag",
               "organizations:dashboards-rh-widget",
@@ -397,11 +425,41 @@ sentry.conf.py: |-
               "projects:plugins",
               "projects:rate-limits",
               "projects:servicehooks",
+              "projects:alert-filters",
+              "projects:issue-alerts-targeting",
+              "projects:minidump",
+              "projects:sample-events",
+              "projects:similarity-view",
+              "projects:similarity-indexing",
+              "projects:similarity-view-v2",
+              "projects:similarity-indexing-v2",
           )
           {{- if .Values.sentry.features.enableSpan }}
           + (
               # Performance/Tracing/Spans
               "organizations:performance-view",
+              "organizations:performance-frontend-use-events-endpoint",
+              "organizations:project-detail",
+              "organizations:relay",
+              "organizations:release-performance-views",
+              "organizations:rule-page",
+              "organizations:set-grouping-config",
+              "organizations:custom-event-title",
+              "organizations:slack-migration",
+              "organizations:sso-basic",
+              "organizations:sso-saml2",
+              "organizations:sso-migration",
+              "organizations:stacktrace-hover-preview",
+              "organizations:symbol-sources",
+              "organizations:transaction-comparison",
+              "organizations:usage-stats-graph",
+              "organizations:inbox",
+              "organizations:unhandled-issue-flag",
+              "organizations:invite-members-rate-limits",
+              "organizations:dashboards-v2",
+              "organizations:reprocessing-v2",
+              "organizations:metrics",
+              "organizations:metrics-extraction",
               "organizations:span-stats",
               "organizations:visibility-explore-view",
               "organizations:visibility-explore-range-high",
@@ -434,13 +492,28 @@ sentry.conf.py: |-
               "organizations:session-replay-ui",
               "organizations:session-replay-issue-emails",
               "organizations:session-replay-recording-scrubbing",
+              "organizations:session-replay-a11y-tab",
               "organizations:session-replay-slack-new-issue",
+              "organizations:session-replay-issue-emails",
+              "organizations:session-replay-event-linking",
+              "organizations:session-replay-weekly-email",
+              "organizations:session-replay-trace-table",
+              "organizations:session-replay-rage-dead-selectors",
+              "organizations:session-replay-new-event-counts",
+              "organizations:session-replay-new-timeline",
+              "organizations:issue-details-replay-event",
           )
           {{- end }}
           {{- if .Values.sentry.features.enableFeedback }}
           + (
               # User Feedback
+              "organizations:user-feedback-ingest",
+              "organizations:user-feedback-replay-clip",
               "organizations:user-feedback-ui",
+              "organizations:feedback-visible",
+              "organizations:user-feedback-replay-clip",
+              "organizations:feedback-ingest",
+              "organizations:feedback-post-process-group",
           )
           {{- end }}
           {{- if .Values.sentry.features.enableProfiling }}
@@ -495,14 +568,18 @@ sentry.conf.py: |-
               "organizations:reprocessing-v2",
               "organizations:set-grouping-config",
               "organizations:onboarding",
-              "projects:similarity-indexing",
-              "projects:similarity-view",
+              "organizations:issue-platform",
+              "organizations:dashboards-mep",
+              "organizations:mep-rollout-flag",
+              "organizations:dashboards-rh-widget",
+              "organizations:metrics-extraction",
+              "organizations:dynamic-sampling",
           )
           {{- if .Values.sentry.customFeatures }}
           + (
               # Custom features from values
               {{- range $CustomFeature := .Values.sentry.customFeatures }}
-              "{{ $CustomFeature }}",
+              {{ $CustomFeature |quote }},
               {{- end }}
           )
           {{- end }}
@@ -806,6 +883,11 @@ sentry.conf.py: |-
 {{- end }}
   {{ .Values.config.sentryConfPy | nindent 2 }}
 {{- end -}}
+
+#########
+# Tasks #
+#########
+SENTRY_OPTIONS["taskworker.enabled"] = {{ if .Values.sentry.taskworker.enabled }}True{{ else }}False{{ end }}
 
 {{/*
 Init container for installing sentry-nodestore-s3 package

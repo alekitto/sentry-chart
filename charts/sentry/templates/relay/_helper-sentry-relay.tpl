@@ -34,6 +34,11 @@ config.yml: |-
     {{- end }}
   {{- end }}
 
+  # In some cases, relay might fail to find out the actual machine memory
+  # therefore it makes the healthcheck fail and events can't be submitted.
+  health:
+    max_memory_percent: 1.0
+
   processing:
     enabled: true
     {{- if .Values.geodata.path }}

@@ -1,0 +1,25 @@
+{{- if .Values.taskbroker.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "sentry.fullname" . }}-taskbroker
+  annotations:
+    {{- range $key, $value := .Values.taskbroker.service.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  labels:
+    app: {{ template "sentry.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ template "taskbroker.port" . }}
+    targetPort: {{ template "taskbroker.port" }}
+    protocol: TCP
+    name: {{ .Values.service.name }}-taskbroker
+  selector:
+    app: {{ template "sentry.fullname" . }}
+    role: taskbroker
+{{- end }}
