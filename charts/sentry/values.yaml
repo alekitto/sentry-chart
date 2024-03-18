@@ -94,6 +94,52 @@ serviceAccount:
   # serviceAccount.automountServiceAccountToken -- Automount API credentials for a Service Account.
   automountServiceAccountToken: true
 
+taskbroker:
+  enabled: true
+  # annotations: {}
+  replicas: 1
+  # concurrency: 4
+  env: []
+  existingSecretEnv: ""
+  resources: {}
+  #  requests:
+  #    cpu: 1000m
+  #    memory: 1100Mi
+  affinity: {}
+  nodeSelector: {}
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: ""
+  # tolerations: []
+  # podLabels: {}
+  # logLevel: "WARNING" # DEBUG|INFO|WARNING|ERROR|CRITICAL|FATAL
+  # logFormat: "machine" # human|machine
+  # excludeQueues: ""
+  # maxTasksPerChild: 1000
+  # it's better to use prometheus adapter and scale based on
+  # the size of the rabbitmq queue
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 60
+    timeoutSeconds: 10
+    failureThreshold: 3
+  sidecars: []
+  service:
+    annotations: {}
+  # securityContext: {}
+  # containerSecurityContext: {}
+  # priorityClassName: ""
+  topologySpreadConstraints: []
+  volumes: []
+  volumeMounts: []
+
 vroom:
   annotations: {}
   args: []
@@ -265,7 +311,7 @@ relay:
   volumeMounts: []
   init:
     resources: {}
-    additionalArgs: []
+    additionalArgs: ['--overwrite']
     # credentialsSubcommand: ""
     env: []
     volumes: []
@@ -994,6 +1040,40 @@ sentry:
     autoOffsetReset: earliest
     noStrictOffsetReset: true
 
+  uptimeResultsConsumer:
+    enabled: true
+    replicas: 1
+    env: []
+    resources: {}
+    #  requests:
+    #    cpu: 100m
+    #    memory: 250Mi
+    affinity: {}
+    nodeSelector: {}
+    securityContext: {}
+    containerSecurityContext: {}
+    # tolerations: []
+    # podLabels: {}
+    # it's better to use prometheus adapter and scale based on
+    # the size of the rabbitmq queue
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPUUtilizationPercentage: 50
+    sidecars: []
+    topologySpreadConstraints: []
+    volumes: []
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 5
+      periodSeconds: 320
+    # volumeMounts:
+    #   - mountPath: /dev/shm
+    #     name: dshm
+    autoOffsetReset: "latest"
+    noStrictOffsetReset: true
+
   genericMetricsConsumer:
     enabled: true
     # Recreate if replicas=1, else RollingUpdate (see sentry-kubernetes/charts#2238). Override to force either.
@@ -1374,13 +1454,13 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
       failureThreshold: 5
       timeoutSeconds: 5
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: false
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1455,8 +1535,8 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
-    # noStrictOffsetReset: false
+    autoOffsetReset: "earliest"
+    noStrictOffsetReset: true
     # maxBatchSize: "3"
     livenessProbe:
       enabled: true
@@ -1546,6 +1626,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1680,6 +1761,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1687,8 +1769,47 @@ snuba:
       timeoutSeconds: 5
     volumes: []
     volumeMounts: []
+    # maxBatchSize: ""
+    # processes: ""
+    # inputBlockSize: ""
+    # outputBlockSize: ""
+    maxBatchTimeMs: 750
+    # queuedMaxMessagesKbytes: ""
+    # queuedMinMessages: ""
     # autoOffsetReset: "earliest"
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
+
+  genericMetricsDistributionConsumer:
+    enabled: true
+    annotations: {}
+    replicas: 1
+    env: []
+    resources: {}
+    affinity: {}
+    nodeSelector: {}
+    securityContext: {}
+    topologySpreadConstraints: []
+    containerSecurityContext: {}
+    tolerations: []
+    podLabels: {}
+    sidecars: []
+    autoOffsetReset: "latest"
+    livenessProbe:
+      enabled: true
+      periodSeconds: 30
+      failureThreshold: 5
+      timeoutSeconds: 5
+    volumes: []
+    volumeMounts: []
+    # maxBatchSize: ""
+    # processes: ""
+    # inputBlockSize: ""
+    # outputBlockSize: ""
+    maxBatchTimeMs: 750
+    # queuedMaxMessagesKbytes: ""
+    # queuedMinMessages: ""
+    # autoOffsetReset: "earliest"
+    noStrictOffsetReset: true
 
   genericMetricsCountersConsumer:
     # Default --max-poll-interval-ms (self-hosted SENTRY_KAFKA_MAX_POLL_INTERVAL_MS). Set null to disable.
@@ -1708,7 +1829,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1723,7 +1844,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
 
   subscriptionConsumerMetrics:  # should have 1 partition and only 1 consumer replica: https://github.com/getsentry/snuba/issues/5855
     enabled: true
@@ -1799,7 +1920,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1812,7 +1933,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1839,7 +1960,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1852,7 +1973,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1878,7 +1999,7 @@ snuba:
     containerSecurityContext: {}
     tolerations: []
     podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1918,7 +2039,7 @@ snuba:
     containerSecurityContext: {}
     tolerations: []
     podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1929,6 +2050,45 @@ snuba:
     # inputBlockSize: ""
     # outputBlockSize: ""
     maxBatchTimeMs: 750
+    # queuedMaxMessagesKbytes: ""
+    # queuedMinMessages: ""
+    # noStrictOffsetReset: false
+
+    # volumeMounts:
+    #   - mountPath: /dev/shm
+    #     name: dshm
+    # volumes:
+    #   - name: dshm
+    #     emptyDir:
+    #       medium: Memory
+
+  profilingProfileChunksConsumer:
+    # Recreate if replicas=1, else RollingUpdate (see sentry-kubernetes/charts#2238). Override to force either.
+    strategyType: null
+    # Default --max-poll-interval-ms (self-hosted SENTRY_KAFKA_MAX_POLL_INTERVAL_MS). Set null to disable.
+    maxPollIntervalMs: 300000
+    replicas: 1
+    env: []
+    resources: {}
+    affinity: {}
+    sidecars: []
+    nodeSelector: {}
+    securityContext: {}
+    topologySpreadConstraints: []
+    containerSecurityContext: {}
+    # tolerations: []
+    # podLabels: {}
+    autoOffsetReset: "latest"
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 5
+      periodSeconds: 320
+    noStrictOffsetReset: true
+    # maxBatchSize: ""
+    # processes: ""
+    # inputBlockSize: ""
+    # outputBlockSize: ""
+    maxBatchTimeMs: 1000
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
     # noStrictOffsetReset: false
@@ -1997,7 +2157,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -2010,7 +2170,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -2037,7 +2197,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30

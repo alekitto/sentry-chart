@@ -56,15 +56,6 @@ jobs:
           branch: gh-pages
           directory: gh-pages
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: ./gh-pages/charts
-        with:
-          keepFiles: true
-
       - name: Login to GHCR
         uses: docker/login-action@v4
         with:

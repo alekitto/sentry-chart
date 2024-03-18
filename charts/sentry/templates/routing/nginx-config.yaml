@@ -7,6 +7,8 @@ metadata:
     {{- include "sentry.component.labels" (dict "component" "nginx" "ctx" .) | nindent 4 }}
 data:
   server-config.conf: |
+    include /opt/bitnami/nginx/conf/mime.types;
+
     {{ if .Values.relay.enabled }}
     upstream relay {
       server {{ template "sentry.fullname" . }}-relay:{{ template "relay.port" }};
