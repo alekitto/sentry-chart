@@ -314,7 +314,9 @@ sentry.conf.py: |-
   ###################
 
   SENTRY_RELEASE_HEALTH = "sentry.release_health.metrics.MetricsReleaseHealthBackend"
-  SENTRY_RELEASE_MONITOR = "sentry.release_health.release_monitor.metrics.MetricReleaseMonitorBackend"
+  SENTRY_RELEASE_MONITOR = (
+    "sentry.release_health.release_monitor.metrics.MetricReleaseMonitorBackend"
+  )
 
   ##############
   # Web Server #
@@ -377,10 +379,15 @@ sentry.conf.py: |-
 
   # End of SSL/TLS settings
 
+  #################
+  # JS SDK Loader #
+  #################
+
+  JS_SDK_LOADER_DEFAULT_SDK_URL = "https://browser.sentry-cdn.com/%s/bundle%s.min.js"
+
   ############
   # Features #
   ############
-
 
   SENTRY_FEATURES = {
     "auth:register": {{ .Values.auth.register | ternary "True" "False" }}
@@ -507,11 +514,12 @@ sentry.conf.py: |-
               {{ end -}}
 
               {{- if .Values.sentry.features.enableFeedback }}
-              "organizations:user-feedback-ui",
               "organizations:user-feedback-ingest",
+              "organizations:user-feedback-replay-clip",
+              "organizations:user-feedback-ui",
+              "organizations:feedback-visible",
               "organizations:feedback-ingest",
               "organizations:feedback-post-process-group",
-              "organizations:feedback-visible",
               {{ end -}}
 
               {{- if .Values.sentry.features.enableSpan }}
@@ -524,6 +532,7 @@ sentry.conf.py: |-
               "organizations:performance-calculate-score-relay",
               "organizations:starfish-browser-webvitals-replace-fid-with-inp",
               "organizations:deprecate-fid-from-performance-score",
+              "organizations:indexed-spans-extraction",
               "organizations:performance-database-view",
               "organizations:performance-screens-view",
               "organizations:mobile-ttid-ttfd-contribution",
@@ -555,6 +564,7 @@ sentry.conf.py: |-
               "projects:similarity-indexing-v2",
 
               "projects:plugins",
+
               {{- if .Values.sentry.customFeatures }}
               {{- range $CustomFeature := .Values.sentry.customFeatures }}
               "{{ $CustomFeature}}",

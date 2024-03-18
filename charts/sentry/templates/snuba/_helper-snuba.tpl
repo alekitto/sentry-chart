@@ -57,6 +57,8 @@ settings.py: |
           "generic_metrics_gauges",
           "metrics_summaries",
           "profile_chunks",
+          "search_issues_tmp",
+          "events_analytics_platform"
       },
       {{- /*
         The default clickhouse installation runs in distributed mode, while the external

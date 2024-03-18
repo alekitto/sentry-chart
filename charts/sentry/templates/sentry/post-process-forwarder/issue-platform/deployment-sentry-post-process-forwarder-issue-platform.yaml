@@ -84,6 +84,9 @@ spec:
           - "post-process-forwarder-issue-platform"
           - "--consumer-group"
           - "post-process-forwarder"
+          {{- if .Values.sentry.postProcessForwardIssuePlatform.noStrictOffsetReset }}
+          - "--no-strict-offset-reset"
+          {{- end }}
           - "--synchronize-commit-log-topic=snuba-generic-events-commit-log"
           - "--synchronize-commit-group"
           - "generic_events_group"
@@ -97,6 +100,27 @@ spec:
           {{- if .Values.sentry.postProcessForwardIssuePlatform.livenessProbe.enabled }}
           - "--healthcheck-file-path"
           - "/tmp/health.txt"
+          {{- end }}
+          {{- if .Values.sentry.postProcessForwardIssuePlatform.maxBatchSize }}
+          - "--max-batch-size"
+          - "{{ .Values.sentry.postProcessForwardIssuePlatform.maxBatchSize }}"
+          {{- end }}
+          {{- if .Values.sentry.postProcessForwardIssuePlatform.logLevel }}
+          - "--log-level"
+          - "{{ .Values.sentry.postProcessForwardIssuePlatform.logLevel }}"
+          {{- end }}
+          {{- if .Values.sentry.postProcessForwardIssuePlatform.inputBlockSize }}
+          - "--input-block-size"
+          - "{{ .Values.sentry.postProcessForwardIssuePlatform.inputBlockSize }}"
+          {{- end }}
+          {{- if .Values.sentry.postProcessForwardIssuePlatform.maxBatchTimeMs }}
+          - "--max-batch-time-ms"
+          - "{{ .Values.sentry.postProcessForwardIssuePlatform.maxBatchTimeMs }}"
+          {{- end }}
+          - "--"
+          {{- if .Values.sentry.postProcessForwardIssuePlatform.concurrency }}
+          - "--processes"
+          - "{{ .Values.sentry.postProcessForwardIssuePlatform.concurrency }}"
           {{- end }}
         {{- if .Values.sentry.postProcessForwardIssuePlatform.livenessProbe.enabled }}
         livenessProbe:

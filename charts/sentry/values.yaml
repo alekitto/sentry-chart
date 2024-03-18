@@ -999,12 +999,12 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: false
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1032,8 +1032,8 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
-    # noStrictOffsetReset: false
+    autoOffsetReset: "earliest"
+    noStrictOffsetReset: true
     maxBatchSize: "3"
     livenessProbe:
       enabled: true
@@ -1117,7 +1117,13 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
+    noStrictOffsetReset: true
+    # processes: ""
+    # inputBlockSize: ""
+    # outputBlockSize: ""
+    # queuedMaxMessagesKbytes: ""
+    # queuedMinMessages: ""
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
@@ -1166,7 +1172,13 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
+    noStrictOffsetReset: true
+    # processes: ""
+    # inputBlockSize: ""
+    # outputBlockSize: ""
+    # queuedMaxMessagesKbytes: ""
+    # queuedMinMessages: ""
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
@@ -1194,7 +1206,13 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
+    noStrictOffsetReset: true
+    # processes: ""
+    # inputBlockSize: ""
+    # outputBlockSize: ""
+    # queuedMaxMessagesKbytes: ""
+    # queuedMinMessages: ""
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
@@ -1222,7 +1240,13 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
+    noStrictOffsetReset: true
+    # processes: ""
+    # inputBlockSize: ""
+    # outputBlockSize: ""
+    # queuedMaxMessagesKbytes: ""
+    # queuedMinMessages: ""
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
@@ -1315,11 +1339,12 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
+    noStrictOffsetReset: true
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1376,11 +1401,12 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
+    noStrictOffsetReset: true
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1408,11 +1434,12 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
+    noStrictOffsetReset: true
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1441,16 +1468,17 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
+    noStrictOffsetReset: true
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
     # outputBlockSize: ""
-    maxBatchTimeMs: 750
+    maxBatchTimeMs: 1000
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
     # noStrictOffsetReset: false
@@ -1474,11 +1502,12 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
+    noStrictOffsetReset: true
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1507,11 +1536,12 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
+    noStrictOffsetReset: true
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1540,11 +1570,12 @@ snuba:
     containerSecurityContext: {}
     # tolerations: []
     # podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       initialDelaySeconds: 5
       periodSeconds: 320
+    noStrictOffsetReset: true
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
