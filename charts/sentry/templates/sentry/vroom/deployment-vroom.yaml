@@ -78,11 +78,39 @@ spec:
         env:
         - name: VROOM_PORT
           value: '{{ template "vroom.port" }}'
+        - name: SENTRY_KAFKA_BROKERS_PROFILING
+          value: {{ (include "sentry.kafka.bootstrap_servers_string" .) | quote }}
+        - name: SENTRY_KAFKA_BROKERS_OCCURRENCES
+          value: {{ (include "sentry.kafka.bootstrap_servers_string" .) | quote }}
+        - name: SENTRY_SNUBA_HOST
+          value: 'http://{{ template "sentry.fullname" . }}-snuba:{{ template "snuba.port" . }}'
+        - name: SENTRY_BUCKET_PROFILES
+          {{- if eq .Values.filestore.backend "filesystem" }}
+          value: file://localhost//var/lib/sentry-profiles
+          {{ end }}
+          {{- if eq .Values.filestore.backend "gcs" }}
+          value: 'gcs://{{ .Values.filestore.gcs.bucketName }}'
+          {{ end }}
+          {{- if eq .Values.filestore.backend "s3" }}
+          value: 's3://{{ .Values.filestore.s3.bucketName }}?region={{ .Values.filestore.s3.region_name | default "us-east-1" }}&awssdk=v2'
+          {{ end }}
+{{- if eq .Values.filestore.backend "s3" }}
+        - name: AWS_ACCESS_KEY_ID
+          value: {{ .Values.filestore.s3.accessKey | default "" | quote }}
+        - name: AWS_SECRET_ACCESS_KEY
+          value: {{ .Values.filestore.s3.secretKey | default "" | quote }}
+{{ end }}
 {{- if .Values.vroom.env }}
 {{ toYaml .Values.vroom.env | indent 8 }}
 {{- end }}
-{{- if .Values.vroom.volumeMounts }}
         volumeMounts:
+          - mountPath: /var/lib/sentry-profiles
+            name: vroom-profiles
+        {{- if and (eq .Values.filestore.backend "gcs") .Values.filestore.gcs.secretName }}
+          - name: sentry-google-cloud-key
+            mountPath: /var/run/secrets/google
+        {{ end }}
+{{- if .Values.vroom.volumeMounts }}
 {{ toYaml .Values.vroom.volumeMounts | indent 10 }}
 {{- end }}
         livenessProbe:
@@ -117,8 +145,15 @@ spec:
       {{- if .Values.serviceAccount.enabled }}
       serviceAccountName: {{ .Values.serviceAccount.name }}-vroom
       {{- end }}
-{{- if .Values.vroom.volumes }}
       volumes:
+        - name: vroom-profiles
+          emptyDir: {}
+      {{- if and (eq .Values.filestore.backend "gcs") .Values.filestore.gcs.secretName }}
+        - name: sentry-google-cloud-key
+          secret:
+            secretName: {{ .Values.filestore.gcs.secretName }}
+      {{ end }}
+{{- if .Values.vroom.volumes }}
 {{ toYaml .Values.vroom.volumes | indent 6 }}
 {{- end }}
       {{- if .Values.vroom.priorityClassName }}
