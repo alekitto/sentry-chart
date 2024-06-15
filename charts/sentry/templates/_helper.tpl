@@ -660,9 +660,23 @@ Set external Clickhouse password from existingSecret
 - name: SENTRY_KAFKA_BROKERS_OCCURRENCES
   value: {{ include "sentry.kafka.bootstrap_servers_string" . | quote }}
 - name: SENTRY_BUCKET_PROFILES
-  value: {{ .Values.vroom.persistence.bucketString | quote }}
+{{- if eq .Values.filestore.backend "filesystem" }}
+  value: file://localhost//var/lib/sentry-profiles
+{{ end }}
+{{- if eq .Values.filestore.backend "gcs" }}
+  value: 'gcs://{{ .Values.filestore.gcs.bucketName }}'
+{{ end }}
+{{- if eq .Values.filestore.backend "s3" }}
+  value: 's3://{{ .Values.filestore.s3.bucketName }}?region={{ .Values.filestore.s3.region_name | default "us-east-1" }}&awssdk=v2'
+{{ end }}
 - name: SENTRY_SNUBA_HOST
   value: http://{{ template "sentry.fullname" . }}-snuba:{{ template "snuba.port" . }}
+{{- if eq .Values.filestore.backend "s3" }}
+- name: AWS_ACCESS_KEY_ID
+  value: {{ .Values.filestore.s3.accessKey | default "" | quote }}
+- name: AWS_SECRET_ACCESS_KEY
+  value: {{ .Values.filestore.s3.secretKey | default "" | quote }}
+{{ end }}
 {{- end -}}
 
 {{/*
