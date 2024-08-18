@@ -2303,6 +2303,7 @@ hooks:
     nodeSelector: {}
     tolerations: []
     volumeMounts: []
+    noRepair: false
   snubaInit:
     enabled: true
     # As snubaInit doesn't support configuring partition and replication factor, you can disable snubaInit's kafka topic creation by setting `kafka.enabled` to `false`,
