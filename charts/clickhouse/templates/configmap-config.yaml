@@ -89,19 +89,38 @@ data:
         <max_server_memory_usage>{{ .Values.clickhouse.configmap.max_server_memory_usage | default "0" }}</max_server_memory_usage>
         {{- end }}
 
-        <query_log>
-            <database>system</database>
-            <table>query_log</table>
-            <partition_by>toYYYYMM(event_date)</partition_by>
-            <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <query_log replace="1">
+          <database>system</database>
+          <table>query_log</table>
+          <engine>ENGINE = MergeTree PARTITION BY toYYYYMM(event_date)
+            ORDER BY (event_time)
+            TTL event_date + INTERVAL 14 DAY DELETE
+          </engine>
+          <flush_interval_milliseconds>7500</flush_interval_milliseconds>
         </query_log>
 
-        <query_thread_log>
-            <database>system</database>
-            <table>query_thread_log</table>
-            <partition_by>toYYYYMM(event_date)</partition_by>
-            <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <query_thread_log replace="1">
+          <database>system</database>
+          <table>query_log</table>
+          <engine>ENGINE = MergeTree PARTITION BY toYYYYMM(event_date)
+            ORDER BY (event_time)
+            TTL event_date + INTERVAL 14 DAY DELETE
+          </engine>
+          <flush_interval_milliseconds>7500</flush_interval_milliseconds>
         </query_thread_log>
+
+        <asynchronous_metric_log remove="1"/>
+        <backup_log remove="1"/>
+        <metric_log remove="1"/>
+        <query_views_log remove="1" />
+        <part_log remove="1"/>
+        <session_log remove="1"/>
+        <text_log remove="1" />
+        <trace_log remove="1"/>
+        <crash_log remove="1"/>
+        <opentelemetry_span_log remove="1"/>
+        <zookeeper_log remove="1"/>
+        <processors_profile_log remove="1"/>
 
         <distributed_ddl>
             <path>/clickhouse/task_queue/ddl</path>
@@ -171,7 +190,7 @@ data:
 
         {{ .Values.clickhouse.configmap.extra_config | default "" | nindent 8 }}
     </yandex>
-{{- if .Values.clickhouse.configmap.configOverride }}
+    {{- if .Values.clickhouse.configmap.configOverride }}
   override.xml: |-
     <?xml version="1.0"?>
     {{- .Values.clickhouse.configmap.configOverride | nindent 4 }}
