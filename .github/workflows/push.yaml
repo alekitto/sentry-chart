@@ -2,8 +2,8 @@ name: Build and push Chart
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - develop
 
 permissions:
   contents: write
@@ -41,7 +41,7 @@ jobs:
           helm package -u main/charts/sentry --destination packages
           helm package -u main/charts/sentry-kubernetes --destination packages
           cp packages/*.tgz gh-pages/charts/
-          helm repo index --url https://sentry-kubernetes.github.io/charts ./gh-pages/charts
+          helm repo index --url https://alekitto.github.io/sentry-chart/charts ./gh-pages/charts
 
       - name: Commit files
         run: |
