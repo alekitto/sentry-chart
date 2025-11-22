@@ -3204,7 +3204,7 @@ kafka:
       image:
         repository: bitnamilegacy/jmx-exporter
   controller:
-    replicaCount: 3
+    replicaCount: 1
     nodeSelector: {}
     tolerations: []
     ## if the load on the kafka controller increases, resourcesPreset must be increased
@@ -3213,6 +3213,9 @@ kafka:
     ## if the load on the kafka controller increases, persistence.size must be increased
     # persistence:
     #   size: 8Gi
+  service:
+    ports:
+      client: 9092
   ## Use this to enable an extra service account
   # serviceAccount:
   #   create: false
