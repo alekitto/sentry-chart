@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "sentry.fullname" . }}-snuba-errors-consumer
+  name: {{ template "sentry.fullname" . }}-snuba-consumer
   labels:
     app: {{ template "sentry.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -23,7 +23,7 @@ spec:
     matchLabels:
         app: {{ template "sentry.fullname" . }}
         release: "{{ .Release.Name }}"
-        role: snuba-errors-consumer
+        role: snuba-consumer
   replicas: {{ .Values.snuba.consumer.replicas }}
   template:
     metadata:
@@ -36,7 +36,7 @@ spec:
       labels:
         app: {{ template "sentry.fullname" . }}
         release: "{{ .Release.Name }}"
-        role: snuba-errors-consumer
+        role: snuba-consumer
         {{- include "sentry.component.labels" (dict "component" "snuba-consumer" "ctx" .) | nindent 8 }}
         {{- if .Values.snuba.consumer.podLabels }}
 {{ toYaml .Values.snuba.consumer.podLabels | indent 8 }}
