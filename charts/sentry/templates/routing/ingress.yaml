@@ -58,26 +58,13 @@ spec:
     - host: '*.ingest.{{ $host }}'
       http:
         paths:
-        {{- range $rule := $pathRules }}
-          - path: {{ $rule.path | quote }}
-            pathType: {{ $rule.pathType | default $ingressPathType }}
+          - path: /
+            pathType: {{ $ingressPathType }}
             backend:
-              {{- if eq (default "web" $rule.service) "relay" }}
               service:
                 name: {{ template "sentry.fullname" $outer }}-relay
                 port:
                   number: {{ template "relay.port" $outer }}
-              {{- else }}
-              service:
-                name: {{ template "sentry.fullname" $outer }}-web
-                port:
-                  {{- if kindIs "float64" $outer.Values.service.externalPort }}
-                  number: {{ $outer.Values.service.externalPort }}
-                  {{- else }}
-                  name: {{ $outer.Values.service.externalPort }}
-                  {{- end }}
-              {{- end }}
-        {{- end }}
 {{- end -}}
 {{- end -}}
 {{- if .Values.ingress.tls }}
