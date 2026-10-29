@@ -266,7 +266,7 @@ relay:
   volumeMounts: []
   init:
     resources: {}
-    additionalArgs: []
+    additionalArgs: ['--overwrite']
     # credentialsSubcommand: ""
     env: []
     volumes: []
@@ -1229,6 +1229,7 @@ sentry:
         ms: 1000
 
 snuba:
+  logLevel: info
   annotations: {}
   api:
     enabled: true
@@ -1297,13 +1298,13 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
       failureThreshold: 5
       timeoutSeconds: 5
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: false
     # maxBatchSize: ""
     # processes: ""
     # inputBlockSize: ""
@@ -1378,8 +1379,8 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
-    # noStrictOffsetReset: false
+    autoOffsetReset: "earliest"
+    noStrictOffsetReset: true
     # maxBatchSize: "3"
     livenessProbe:
       enabled: true
@@ -1469,6 +1470,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1661,7 +1663,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1674,7 +1676,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1701,7 +1703,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1714,7 +1716,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1740,7 +1742,7 @@ snuba:
     containerSecurityContext: {}
     tolerations: []
     podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1780,7 +1782,7 @@ snuba:
     containerSecurityContext: {}
     tolerations: []
     podLabels: {}
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1794,6 +1796,7 @@ snuba:
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
     # noStrictOffsetReset: false
+
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1859,7 +1862,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -1872,7 +1875,7 @@ snuba:
     maxBatchTimeMs: 750
     # queuedMaxMessagesKbytes: ""
     # queuedMinMessages: ""
-    # noStrictOffsetReset: false
+    noStrictOffsetReset: true
     # volumeMounts:
     #   - mountPath: /dev/shm
     #     name: dshm
@@ -1899,7 +1902,7 @@ snuba:
     tolerations: []
     podLabels: {}
     sidecars: []
-    # autoOffsetReset: "earliest"
+    autoOffsetReset: "latest"
     livenessProbe:
       enabled: true
       periodSeconds: 30
@@ -2052,6 +2055,7 @@ hooks:
     nodeSelector: {}
     tolerations: []
     volumeMounts: []
+    noRepair: false
   snubaInit:
     enabled: true
     # As snubaInit doesn't support configuring partition and replication factor, you can disable snubaInit's kafka topic creation by setting `kafka.enabled` to `false`,
@@ -2133,6 +2137,7 @@ mail:
   # existingSecretKey: secret-key-name
   port: 25
   host: ""
+  listNamespace: localhost
   from: ""
 
 symbolicator:
@@ -2974,7 +2979,7 @@ kafka:
       image:
         repository: bitnamilegacy/jmx-exporter
   controller:
-    replicaCount: 3
+    replicaCount: 1
     nodeSelector: {}
     tolerations: []
     ## if the load on the kafka controller increases, resourcesPreset must be increased
@@ -2983,6 +2988,9 @@ kafka:
     ## if the load on the kafka controller increases, persistence.size must be increased
     # persistence:
     #   size: 8Gi
+  service:
+    ports:
+      client: 9092
   ## Use this to enable an extra service account
   # serviceAccount:
   #   create: false

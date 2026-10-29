@@ -134,9 +134,83 @@ sentry.conf.py: |-
 
   SENTRY_OPTIONS["system.event-retention-days"] = int(env('SENTRY_EVENT_RETENTION_DAYS') or {{ .Values.sentry.cleanup.days | quote }})
 
+  ############################
+  # Sentry Endpoint Settings #
+  ############################
+
+  # URI Prefixes for generating DSN URLs
+  # (default is URL_PREFIX)
+  # SENTRY_ENDPOINT = "https://sentry.ingest.example.com"
+
   {{- if has "errors-only" .Values.profiles }}
   SENTRY_SELF_HOSTED_ERRORS_ONLY = True
   {{- end }}
+
+  # When running in an air-gapped environment, set this to True to entirely disable
+  # external network calls and features that require Internet connectivity.
+  #
+  # Setting the value to False while running in an air-gapped environment will
+  # cause some containers to raise exceptions. One known example is fetching
+  # AI model prices from various public APIs.
+  SENTRY_AIR_GAP = False
+
+  # As of 25.9.0 (September 2025 release), Sentry enforces tighter restrictions
+  # of allowed IP addresses for outgoing requests. This is to prevent
+  # accidentally leaking sensitive information to third parties.
+  #
+  # By default, Sentry will not allow requests to private IP addresses.
+  # You can override this by configuring the allowed IP addresses here.
+  # Below is the default value, which is a list of IP addresses that are
+  # considered "private" and "reserved".
+  #
+  # SENTRY_DISALLOWED_IPS: tuple[str, ...] = (
+  #     # https://en.wikipedia.org/wiki/Reserved_IP_addresses#IPv4
+  #     "0.0.0.0/8",
+  #     "10.0.0.0/8",
+  #     "100.64.0.0/10",
+  #     "127.0.0.0/8",
+  #     "169.254.0.0/16",
+  #     "172.16.0.0/12",
+  #     "192.0.0.0/29",
+  #     "192.0.2.0/24",
+  #     "192.88.99.0/24",
+  #     "192.168.0.0/16",
+  #     "198.18.0.0/15",
+  #     "198.51.100.0/24",
+  #     "224.0.0.0/4",
+  #     "240.0.0.0/4",
+  #     "255.255.255.255/32",
+  #     # https://en.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses
+  #     # Subnets match the IPv4 subnets above
+  #     "::ffff:0:0/104",
+  #     "::ffff:a00:0/104",
+  #     "::ffff:6440:0/106",
+  #     "::ffff:7f00:0/104",
+  #     "::ffff:a9fe:0/112",
+  #     "::ffff:ac10:0/108",
+  #     "::ffff:c000:0/125",
+  #     "::ffff:c000:200/120",
+  #     "::ffff:c058:6300/120",
+  #     "::ffff:c0a8:0/112",
+  #     "::ffff:c612:0/111",
+  #     "::ffff:c633:6400/120",
+  #     "::ffff:e000:0/100",
+  #     "::ffff:f000:0/100",
+  #     "::ffff:ffff:ffff/128",
+  #     # https://en.wikipedia.org/wiki/Reserved_IP_addresses#IPv6
+  #     "::1/128",
+  #     "::ffff:0:0/96",
+  #     "64:ff9b::/96",
+  #     "64:ff9b:1::/48",
+  #     "100::/64",
+  #     "2001:0000::/32",
+  #     "2001:20::/28",
+  #     "2001:db8::/32",
+  #     "2002::/16",
+  #     "fc00::/7",
+  #     "fe80::/10",
+  #     "ff00::/8",
+  # )
 
   #########
   # Redis #
@@ -283,6 +357,7 @@ sentry.conf.py: |-
 
 
   SENTRY_WEB_PORT = {{ template "sentry.port" }}
+  SENTRY_USE_X_FORWARDED_FOR = True
   SENTRY_PUBLIC = {{ .Values.system.public | ternary "True" "False" }}
   SENTRY_WEB_OPTIONS = {
   {{- if .Values.ipv6 }}
@@ -325,17 +400,32 @@ sentry.conf.py: |-
   # If you're using a reverse SSL proxy, you should enable the X-Forwarded-Proto
   # header and enable the settings below
 
-  # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-  # SESSION_COOKIE_SECURE = True
-  # CSRF_COOKIE_SECURE = True
+  SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+  SESSION_COOKIE_SECURE = True
+  CSRF_COOKIE_SECURE = True
   # SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
   # End of SSL/TLS settings
 
+  #################
+  # JS SDK Loader #
+  #################
+
+  # Configure Sentry JS SDK bundle URL template for Loader Scripts.
+  # Learn more about the Loader Scripts: https://docs.sentry.io/platforms/javascript/install/loader/
+  # If you wish to host your own JS SDK bundles, set `SETUP_JS_SDK_ASSETS` environment variable to `1`
+  # on your `.env` or `.env.custom` file. Then, replace the value below with your own public URL.
+  # For example: "https://sentry.example.com/js-sdk/%s/bundle%s.min.js"
+  #
+  # By default, the previous JS SDK assets version will be pruned during upgrades, if you wish
+  # to keep the old assets, set `SETUP_JS_SDK_KEEP_OLD_ASSETS` environment variable to any value on
+  # your `.env` or `.env.custom` file. The files should only be a few KBs, and this might be useful
+  # if you're using it directly like a CDN instead of using the loader script.
+  JS_SDK_LOADER_DEFAULT_SDK_URL = "https://browser.sentry-cdn.com/%s/bundle%s.min.js"
+
   ############
   # Features #
   ############
-
 
   SENTRY_FEATURES = {
     "auth:register": {{ .Values.auth.register | ternary "True" "False" }}
@@ -357,6 +447,11 @@ sentry.conf.py: |-
               "organizations:sso-basic",
               "organizations:sso-saml2",
               "organizations:advanced-search",
+              "organizations:discover-basic",
+              "organizations:discover-query",
+              "organizations:event-attachments",
+              "organizations:invite-members-rate-limits",
+              "organizations:relay",
               "organizations:dynamic-sampling",
               "organizations:workflow-engine-ui",
               "organizations:workflow-engine-rule-serializers",
@@ -434,7 +529,7 @@ sentry.conf.py: |-
           + (
               # Custom features from values
               {{- range $CustomFeature := .Values.sentry.customFeatures }}
-              "{{ $CustomFeature }}",
+              {{ $CustomFeature | quote }},
               {{- end }}
           )
           {{- end }}
@@ -469,6 +564,7 @@ sentry.conf.py: |-
   SENTRY_OPTIONS['mail.password'] = os.getenv("SENTRY_EMAIL_PASSWORD", "")
   SENTRY_OPTIONS['mail.port'] = int(os.getenv("SENTRY_EMAIL_PORT", {{ .Values.mail.port | quote }}))
   SENTRY_OPTIONS['mail.host'] = os.getenv("SENTRY_EMAIL_HOST", {{ .Values.mail.host | quote }})
+  SENTRY_OPTIONS['mail.list-namespace'] = os.getenv("SENTRY_EMAIL_HOST", {{ .Values.mail.listNamespace | quote }})
   SENTRY_OPTIONS['mail.from'] = os.getenv("SENTRY_EMAIL_FROM", {{ .Values.mail.from | quote }})
 
   ################
