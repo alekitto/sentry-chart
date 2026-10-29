@@ -55,6 +55,16 @@ spec:
                   {{- end }}
               {{- end }}
         {{- end }}
+    - host: '*.ingest.{{ $host }}'
+      http:
+        paths:
+          - path: /
+            pathType: {{ $ingressPathType }}
+            backend:
+              service:
+                name: {{ template "sentry.fullname" $outer }}-relay
+                port:
+                  number: {{ template "relay.port" $outer }}
 {{- end -}}
 {{- end -}}
 {{- if .Values.ingress.tls }}
